@@ -135,7 +135,7 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
 
       <div className="text-center mb-8 relative z-10">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">Upload Files</h2>
-        <p className="text-gray-400 font-medium">Drag & drop files or click to browse</p>
+        <p className="text-[var(--muted-text-color)] font-medium">Drag & drop files or click to browse</p>
       </div>
 
       <div
@@ -170,11 +170,11 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
 
       <div className="mt-8 space-y-4">
         {/* Password Option */}
-        <div className="p-5 rounded-2xl bg-white/5 border border-white/10 transition-all hover:bg-white/10">
+        <div className="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 transition-all hover:bg-black/10 dark:hover:bg-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-xl">🔒</span>
-              <span className="font-semibold text-gray-200">Set Password</span>
+              <span className="font-semibold text-[var(--text-color)]">Set Password</span>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -183,7 +183,7 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
                 checked={enablePassword}
                 onChange={(e) => setEnablePassword(e.target.checked)}
               />
-              <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+              <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
             </label>
           </div>
           {enablePassword && (
@@ -200,11 +200,11 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
         </div>
 
         {/* Expiry Option */}
-        <div className="p-5 rounded-2xl bg-white/5 border border-white/10 transition-all hover:bg-white/10">
+        <div className="p-5 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 transition-all hover:bg-black/10 dark:hover:bg-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="text-xl">⏳</span>
-              <span className="font-semibold text-gray-200">Set Expiry Date</span>
+              <span className="font-semibold text-[var(--text-color)]">Set Expiry Date</span>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -213,7 +213,7 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
                 checked={enableExpiry}
                 onChange={(e) => setEnableExpiry(e.target.checked)}
               />
-              <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+              <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
             </label>
           </div>
           {enableExpiry && (
@@ -230,26 +230,26 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
       </div>
 
       {files.length > 0 && (
-        <div className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/10 shadow-lg animate-fade-in">
+        <div className="mt-8 p-6 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-lg animate-fade-in">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white">Upload Summary</h3>
           </div>
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-black/20 p-4 rounded-xl border border-white/5 text-center flex flex-col items-center justify-center">
+            <div className="bg-black/5 dark:bg-black/20 p-4 rounded-xl border border-black/5 dark:border-white/5 text-center flex flex-col items-center justify-center">
               <span className="text-3xl font-extrabold text-gray-900 dark:text-white">{files.length}</span>
               <span className="text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">Files Selected</span>
             </div>
-            <div className="bg-gray-50 dark:bg-black/20 p-4 rounded-xl border border-gray-200 dark:border-white/5 text-center flex flex-col items-center justify-center">
+            <div className="bg-[var(--subtle-surface-color)] p-4 rounded-xl border border-[var(--border-color)] text-center flex flex-col items-center justify-center">
               <span className="text-xl font-bold text-gray-900 dark:text-white">{(totalSize / 1024).toFixed(2)} KB</span>
-              <span className="text-sm text-gray-400 font-medium mt-1">Total Size</span>
+              <span className="text-sm text-[var(--muted-text-color)] font-medium mt-1">Total Size</span>
             </div>
           </div>
           <div>
-            <div className="flex justify-between text-xs text-gray-400 mb-2 font-medium">
+            <div className="flex justify-between text-xs text-[var(--muted-text-color)] mb-2 font-medium">
               <span>Capacity (5MB Limit)</span>
               <span>{Math.min((totalSize / (5 * 1024 * 1024)) * 100, 100).toFixed(1)}%</span>
             </div>
-            <div className="w-full bg-gray-800 rounded-full h-2.5 overflow-hidden">
+            <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-2.5 overflow-hidden">
               <div
                 className="bg-blue-600 h-2.5 rounded-full transition-all duration-500 ease-out"
                 style={{
@@ -265,15 +265,15 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
       )}
 
       {files.length === 0 ? (
-        <div className="mt-8 py-10 flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-2xl bg-white/5 text-gray-400">
+        <div className="mt-8 py-10 flex flex-col items-center justify-center border-2 border-dashed border-[var(--border-color)] rounded-2xl bg-[var(--subtle-surface-color)] text-[var(--muted-text-color)]">
           <span className="text-4xl mb-3 opacity-50">📂</span>
           <p className="font-medium">No files uploaded yet</p>
         </div>
       ) : (
         <div className="mt-6 space-y-3">
           {files.map((file, index) => (
-            <div className="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all group animate-slide-up" key={index}>
-              <div className="w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-black/40 flex items-center justify-center border border-white/5">
+            <div className="flex items-center gap-4 p-4 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 transition-all group animate-slide-up" key={index}>
+              <div className="w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-black/40 flex items-center justify-center border border-[var(--border-color)] dark:border-white/5">
                 {file.type.startsWith("image") ? (
                   <img
                     src={URL.createObjectURL(file)}
@@ -291,7 +291,7 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-gray-200 truncate pr-4" title={file.name}>
+                  <p className="text-sm font-semibold text-[var(--text-color)] truncate pr-4" title={file.name}>
                     {(() => {
                       const dotIndex = file.name.lastIndexOf(".");
                       const name = file.name.slice(0, dotIndex);
@@ -309,7 +309,7 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
                     ✕
                   </button>
                 </div>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-[var(--muted-text-color)] mt-1">
                   {file.size > 1024 * 1024
                     ? `${(file.size / (1024 * 1024)).toFixed(2)} MB`
                     : `${(file.size / 1024).toFixed(2)} KB`}

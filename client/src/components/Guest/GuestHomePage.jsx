@@ -29,7 +29,7 @@ useEffect(() => {
           <h1 className="text-5xl font-bold mb-6 tracking-tight text-gray-900 dark:text-white">
             Share Files Effortlessly
           </h1>
-          <p className="text-lg text-gray-400 dark:text-gray-300 font-medium">
+          <p className="text-lg text-[var(--muted-text-color)] font-medium">
             Secure, fast, and minimal file sharing. Upload your files below to get started without needing an account.
           </p>
         </div>

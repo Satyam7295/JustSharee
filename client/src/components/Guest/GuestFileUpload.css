@@ -19,13 +19,14 @@
 
 .header p {
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--muted-text-color);
   margin-bottom: 20px;
 }
 
 /* Dropbox */
 .dropbox {
-  border: 2px dashed #bbb;
+  border: 2px dashed var(--border-color);
+  background-color: var(--subtle-surface-color);
   border-radius: 8px;
   padding: 30px;
   text-align: center;
@@ -47,22 +48,30 @@
 
 .dropbox-subtext {
   font-size: 13px;
-  color: var(--text-secondary);
+  color: var(--muted-text-color);
   margin-top: 5px;
   margin-bottom: 15px;
 }
 
 /* Drag Over */
 .dropbox.dragover {
-  background-color: #e6f7ff;
+  background-color: rgba(59, 130, 246, 0.08);
   border-color: #1890ff;
+}
+
+[data-mode='dark'] .dropbox {
+  background-color: transparent;
+}
+
+[data-mode='dark'] .dropbox.dragover {
+  background-color: #e6f7ff;
 }
 
 /* Browse Button */
 .browse-btn {
-  background-color: #1c1c1e;
-  color: #f5f5f5;
-  border: 1px solid #2c2c2e;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--button-border);
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -70,8 +79,14 @@
   transition: background-color 0.2s ease;
 }
 
+.browse-btn:focus-visible,
+.upload-btn:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.45);
+  outline-offset: 2px;
+}
+
 .browse-btn:hover {
-  background-color: #2c2c2e;
+  background-color: var(--button-hover);
 }
 
 .dropbox input[type="file"] {
@@ -188,7 +203,7 @@
 
 .file-size {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--muted-text-color);
   margin-top: 4px;
 }
 
@@ -385,9 +400,9 @@
 }
 
 .upload-btn {
-  background-color: #1c1c1e;
-  color: #f5f5f5;
-  border: 1px solid #2c2c2e;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--button-border);
   padding: 12px 30px;
   font-size: 16px;
   font-weight: 600;
@@ -397,13 +412,19 @@
 }
 
 .upload-btn:hover {
-  background-color: #2c2c2e;
+  background-color: var(--button-hover);
 }
 
 .upload-btn:disabled {
+  background-color: var(--subtle-surface-color);
+  color: var(--muted-text-color);
+  cursor: not-allowed;
+  border-color: var(--border-color);
+}
+
+[data-mode='dark'] .upload-btn:disabled {
   background-color: #111111;
   color: #64748b;
-  cursor: not-allowed;
   border-color: #262626;
 }
 
