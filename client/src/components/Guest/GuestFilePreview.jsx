@@ -26,6 +26,8 @@ const GuestFilePreview = ({ guestFiles, updateFiles }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [deletingAll, setDeletingAll] = useState(false);
+  const [showDeleteAllConfirm, setShowDeleteAllConfirm] = useState(false);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -109,6 +111,23 @@ const GuestFilePreview = ({ guestFiles, updateFiles }) => {
     toast.success("File deleted successfully!");
   };
 
+  const performDeleteAll = () => {
+    if (!files?.length || deletingAll) return;
+
+    setDeletingAll(true);
+    try {
+      const updatedFiles = [];
+      setFiles(updatedFiles);
+      updateFiles(updatedFiles);
+      setShowDeleteAllConfirm(false);
+      toast.success("All uploaded files deleted");
+    } catch (error) {
+      toast.error(error?.message || "Some files could not be deleted");
+    } finally {
+      setDeletingAll(false);
+    }
+  };
+
   useEffect(() => {
     const hydrateGuestFiles = async () => {
       const nextFiles = await Promise.all(
@@ -167,9 +186,21 @@ const GuestFilePreview = ({ guestFiles, updateFiles }) => {
           <FaFolder className="text-sm text-[#8b8b8b]" aria-hidden="true" />
           Your Uploaded Files
         </h2>
-        <p className="text-xs text-[#8b8b8b]">
-          Showing {filteredFiles.length} file{filteredFiles.length !== 1 && "s"}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-xs text-[#8b8b8b]">
+            Showing {filteredFiles.length} file{filteredFiles.length !== 1 && "s"}
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowDeleteAllConfirm(true)}
+            disabled={!files?.length || deletingAll}
+            aria-label="Delete all uploaded files"
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-red-500/80 hover:text-red-400 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <FaTrashAlt className="text-[10px]" aria-hidden="true" />
+            <span>Delete all</span>
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-2 w-full lg:items-center mb-5">
@@ -444,6 +475,41 @@ const GuestFilePreview = ({ guestFiles, updateFiles }) => {
   </Link>
 </p>
 
+        </div>
+      )}
+
+      {showDeleteAllConfirm && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glass-panel p-5 sm:p-6 rounded-2xl shadow-2xl max-w-md w-full border border-[var(--border-color)] animate-fade-in">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
+                <FaTrashAlt className="text-base" aria-hidden="true" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                Delete all files?
+              </h3>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-5">
+              This will permanently delete all uploaded files. This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowDeleteAllConfirm(false)}
+                className="px-3 py-2 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/5 text-[var(--text-color)] hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={performDeleteAll}
+                disabled={deletingAll}
+                className="px-3 py-2 rounded-xl text-xs font-semibold bg-red-600 text-white hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {deletingAll ? "Deleting..." : "Delete all"}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
