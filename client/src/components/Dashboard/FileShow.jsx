@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserFiles } from "../../redux/slice/file/fileThunk";
+import { deleteFile, getUserFiles } from "../../redux/slice/file/fileThunk";
 import { formatDistanceToNowStrict, differenceInDays } from "date-fns";
-import { FaWhatsapp, FaTelegramPlane, FaInstagram, FaEnvelope, FaHeadset,FaDownload } from "react-icons/fa"
+import { FaWhatsapp, FaTelegramPlane, FaInstagram, FaEnvelope, FaHeadset, FaDownload, FaTrashAlt } from "react-icons/fa"
 import { toast } from "react-toastify";
 import FilePreview from "./FilePreview";
 import axiosInstance from "../../config/axiosInstance";
@@ -18,6 +18,7 @@ const FileShow = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
+  const [deletingAll, setDeletingAll] = useState(false);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -102,20 +103,53 @@ const paginatedFiles = filteredFiles?.slice(
   currentPage * itemsPerPage
 );
 
+  const handleDeleteAll = async () => {
+    if (!files?.length || deletingAll) return;
+
+    const confirmed = window.confirm(
+      `Delete all ${files.length} uploaded files? This action cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    setDeletingAll(true);
+    try {
+      await Promise.all(files.map((file) => dispatch(deleteFile(file._id)).unwrap()));
+      toast.success("All uploaded files deleted");
+    } catch (error) {
+      toast.error(error?.error || "Some files could not be deleted");
+      dispatch(getUserFiles(user._id));
+    } finally {
+      setDeletingAll(false);
+    }
+  };
+
   return (
     <div className="flex flex-col mt-8">
       <div className="flex justify-between items-center mb-5">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-            📁 Your Files
+            📁 Your Uploaded Files
           </h2>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
             Manage, preview, and share your uploaded files
           </p>
         </div>
-        <span className="text-xs font-medium px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-gray-600 dark:text-gray-300">
-          {filteredFiles.length} file{filteredFiles.length !== 1 ? "s" : ""}
-        </span>
+        <div className="flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={handleDeleteAll}
+            disabled={!files?.length || deletingAll}
+            title="Delete all uploaded files"
+            aria-label="Delete all uploaded files and start fresh"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-500/25 text-red-400/90 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-xs font-semibold whitespace-nowrap shrink-0"
+          >
+            <FaTrashAlt className="text-[11px]" aria-hidden="true" />
+            <span>{deletingAll ? "Clearing..." : "Start Fresh"}</span>
+          </button>
+          <span className="text-xs font-medium px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 text-gray-600 dark:text-gray-300">
+            Showing {filteredFiles.length} file{filteredFiles.length !== 1 ? "s" : ""}
+          </span>
+        </div>
       </div>
 
       {/* Search and Filters Bar */}
