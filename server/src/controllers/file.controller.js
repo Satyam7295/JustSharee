@@ -31,6 +31,10 @@ const uploadFiles = async (req, res) => {
     return res.status(400).json({ error: 'Password is required when password protection is enabled' });
   }
 
+  if (hasExpiry === 'true' && (!Number.isFinite(Number(expiresAt)) || Number(expiresAt) <= 0)) {
+    return res.status(400).json({ error: 'Expiry must be a valid duration in the future' });
+  }
+
   if (!bucketName) {
     return res.status(500).json({ error: 'S3 bucket is not configured on the server' });
   }
@@ -119,6 +123,10 @@ const uploadFilesGuest = async (req, res) => {
 
       if (isPassword === 'true' && !password) {
         return res.status(400).json({ error: 'Password is required when password protection is enabled' });
+      }
+
+      if (hasExpiry === 'true' && (!Number.isFinite(Number(expiresAt)) || Number(expiresAt) <= 0)) {
+        return res.status(400).json({ error: 'Expiry must be a valid duration in the future' });
       }
 
       if (!bucketName) {

@@ -15,6 +15,25 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
   const [password, setPassword] = useState("");
   const [enableExpiry, setEnableExpiry] = useState(false);
   const [expiryDate, setExpiryDate] = useState("");
+  const [activeExpiryOption, setActiveExpiryOption] = useState("");
+  const [durationAmount, setDurationAmount] = useState("1");
+  const [durationUnit, setDurationUnit] = useState("hours");
+
+  const formatLocalDateTime = (date) => {
+    const pad = (value) => String(value).padStart(2, "0");
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  };
+
+  const setExpiryFromDuration = (amount, unit, option = "") => {
+    const durationInMinutes = amount * (unit === "minutes" ? 1 : unit === "hours" ? 60 : 1440);
+    setExpiryDate(formatLocalDateTime(new Date(Date.now() + durationInMinutes * 60000)));
+    setActiveExpiryOption(option);
+  };
+
+  const handleCustomExpiryChange = (value) => {
+    setExpiryDate(value);
+    setActiveExpiryOption("");
+  };
 
   const handleBrowseClick = () => {
     fileInputRef.current.click();
@@ -75,10 +94,14 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
     files.forEach((file) => formData.append("files", file));
     formData.append("hasExpiry", enableExpiry);
 
-    if (enableExpiry && expiryDate) {
-      const hours = Math.ceil(
-        (new Date(expiryDate) - new Date()) / (1000 * 60 * 60)
-      );
+    if (enableExpiry) {
+      const expiryTimestamp = new Date(expiryDate).getTime();
+      const hours = (expiryTimestamp - Date.now()) / (1000 * 60 * 60);
+      if (!expiryDate || !Number.isFinite(hours) || hours <= 0) {
+        toast.error("Please choose an expiry time in the future.");
+        setLoading(false);
+        return;
+      }
       formData.append("expiresAt", hours);
     }
 
@@ -218,11 +241,49 @@ const GuestFileUpload = ({guestFiles, updateFiles}) => {
           </div>
           {enableExpiry && (
             <div className="mt-4 animate-slide-up">
+              <div className="mb-3">
+                <span className="text-xs font-medium text-[var(--muted-text-color)] block mb-2">Quick expiry</span>
+                <div className="flex flex-wrap gap-2">
+                  {[{ label: "10 min", amount: 10, unit: "minutes" }, { label: "1 hr", amount: 1, unit: "hours" }, { label: "5 hr", amount: 5, unit: "hours" }, { label: "1 day", amount: 1, unit: "days" }].map((option) => (
+                    <button
+                      key={option.label}
+                      type="button"
+                      className={`px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${activeExpiryOption === option.label ? "border-purple-500 bg-purple-500/15 text-purple-400" : "border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:border-purple-500/60 hover:text-purple-400"}`}
+                      onClick={() => setExpiryFromDuration(option.amount, option.unit, option.label)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="mb-3">
+                <label className="text-xs font-medium text-[var(--muted-text-color)] block mb-2">Duration</label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    min="1"
+                    className="w-24 px-3 py-3 rounded-xl bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                    value={durationAmount}
+                    onChange={(e) => { setDurationAmount(e.target.value); setActiveExpiryOption(""); }}
+                    onBlur={() => durationAmount > 0 && setExpiryFromDuration(durationAmount, durationUnit)}
+                  />
+                  <select
+                    className="flex-1 px-3 py-3 rounded-xl bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
+                    value={durationUnit}
+                    onChange={(e) => { setDurationUnit(e.target.value); setActiveExpiryOption(""); setExpiryFromDuration(durationAmount, e.target.value); }}
+                  >
+                    <option value="minutes">Minutes</option>
+                    <option value="hours">Hours</option>
+                    <option value="days">Days</option>
+                  </select>
+                </div>
+              </div>
+              <label className="text-xs font-medium text-[var(--muted-text-color)] block mb-2">Custom expiry</label>
               <input
                 type="datetime-local"
                 className="w-full px-4 py-3 rounded-xl bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
                 value={expiryDate}
-                onChange={(e) => setExpiryDate(e.target.value)}
+                onChange={(e) => handleCustomExpiryChange(e.target.value)}
               />
             </div>
           )}
