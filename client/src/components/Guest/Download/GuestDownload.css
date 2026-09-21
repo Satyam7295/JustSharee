@@ -1,0 +1,236 @@
+.guest-download-page {
+  min-height: 100vh;
+  background: #090909;
+  color: #f5f5f5;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.guest-download-main {
+  width: min(1120px, calc(100% - 64px));
+  margin: 0 auto;
+  padding: 124px 0 80px;
+}
+
+.guest-download-heading {
+  margin-bottom: 40px;
+}
+
+.guest-download-eyebrow,
+.guest-download-section-label,
+.guest-download-meta dt,
+.guest-download-verification label {
+  color: #777;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.guest-download-eyebrow {
+  margin-bottom: 14px;
+}
+
+.guest-download-heading h1 {
+  color: #f5f5f5;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.guest-download-heading > p:last-child {
+  color: #8b8b8b;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.guest-download-layout {
+  display: grid;
+  gap: 56px;
+  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
+}
+
+.guest-download-preview-column,
+.guest-download-details {
+  min-width: 0;
+}
+
+.guest-download-section-label {
+  margin-bottom: 10px;
+}
+
+.guest-download-preview-shell {
+  overflow: hidden;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: #111;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
+.guest-download-preview-shell > div {
+  overflow: hidden;
+  border: 0;
+  border-radius: 7px;
+  background: #0b0b0b;
+  padding: 0;
+}
+
+.guest-download-preview-shell img,
+.guest-download-preview-shell video,
+.guest-download-preview-shell iframe {
+  max-height: 600px;
+}
+
+.guest-download-preview-shell img,
+.guest-download-preview-shell video {
+  border-radius: 7px;
+}
+
+.guest-download-preview-shell audio {
+  display: block;
+  width: 100%;
+}
+
+.guest-download-protected {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  color: #777;
+  text-align: center;
+}
+
+.guest-download-protected svg {
+  color: #aaa;
+  font-size: 20px;
+}
+
+.guest-download-protected p {
+  max-width: 320px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.guest-download-meta {
+  margin: 0;
+}
+
+.guest-download-meta > div {
+  padding: 0 0 20px;
+}
+
+.guest-download-meta > div + div {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 20px;
+}
+
+.guest-download-meta dd {
+  overflow-wrap: anywhere;
+  color: #e5e5e5;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.55;
+  margin: 7px 0 0;
+}
+
+.guest-download-button,
+.guest-download-verify-button {
+  align-items: center;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 46px;
+  transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.guest-download-button {
+  gap: 9px;
+  margin-top: 12px;
+  width: 100%;
+  background: #f2f2f2;
+  color: #111;
+}
+
+.guest-download-button:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.guest-download-button:focus-visible,
+.guest-download-verify-button:focus-visible,
+.guest-download-verification input:focus-visible {
+  outline: 2px solid #8b8b8b;
+  outline-offset: 3px;
+}
+
+.guest-download-verification {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 28px;
+}
+
+.guest-download-verification input {
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  background: #111;
+  color: #f5f5f5;
+  font: inherit;
+  font-size: 14px;
+  padding: 0 12px;
+}
+
+.guest-download-verification input::placeholder {
+  color: #666;
+}
+
+.guest-download-verify-button {
+  width: 100%;
+  background: #222;
+  color: #f5f5f5;
+}
+
+.guest-download-verify-button:hover {
+  background: #2c2c2c;
+}
+
+@media (max-width: 900px) {
+  .guest-download-layout {
+    gap: 40px;
+    grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.8fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .guest-download-main {
+    width: min(100% - 32px, 560px);
+    padding: 100px 0 56px;
+  }
+
+  .guest-download-heading {
+    margin-bottom: 32px;
+  }
+
+  .guest-download-heading h1 {
+    font-size: 28px;
+  }
+
+  .guest-download-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+}

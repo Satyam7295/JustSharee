@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-color: #f5f5f7;
+    --surface-color: #ffffff;
+    --border-color: #e5e5ea;
+    --text-color: #1d1d1f;
+    --primary-text: #0066cc;
+    --text-on-primary: #ffffff;
+    --primary-soft: #f3f4f6;
+    --primary-bg: #ffffff;
+    --toast-bg: #ffffff;
+    --toast-text: #1d1d1f;
+    --button-bg: #000000;
+    --button-text: #ffffff;
+    --button-border: #000000;
+    --button-hover: #333333;
+  }
+
+  [data-mode='dark'] {
+    --bg-color: #0a0a0a;
+    --surface-color: #111111;
+    --border-color: #262626;
+    --text-color: #f5f5f5;
+    --primary-text: #60a5fa;
+    --text-on-primary: #ffffff;
+    --primary-soft: #1a1a1a;
+    --primary-bg: #0a0a0a;
+    --toast-bg: #111111;
+    --toast-text: #f5f5f5;
+    --button-bg: #1c1c1e;
+    --button-text: #f5f5f5;
+    --button-border: #2c2c2e;
+    --button-hover: #2c2c2e;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    @apply font-sans antialiased selection:bg-blue-500/20 selection:text-blue-500 transition-colors duration-300;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight;
+    color: var(--text-color);
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    @apply shadow-sm rounded-xl transition-colors duration-300;
+  }
+  
+  .glass-header {
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+    @apply shadow-sm transition-colors duration-300;
+  }
+
+  .glass-toast {
+    background-color: var(--toast-bg);
+    color: var(--toast-text);
+    border: 1px solid var(--border-color);
+    @apply shadow-md rounded-xl font-sans text-sm font-medium mb-4 transition-colors duration-300;
+  }
+
+  .btn-primary {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    @apply px-5 py-2.5 rounded-xl font-medium transition-colors duration-200 ease-out;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--button-hover);
+  }
+}
+
+#root {
+  @apply min-h-screen flex flex-col;
+}
+
+/* React Toastify overrides */
+.Toastify__toast-container {
+  padding: 1rem;
+}
+.Toastify__toast {
+  border-radius: 0.75rem !important;
+  font-family: inherit !important;
+  background: var(--toast-bg) !important;
+  color: var(--toast-text) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
