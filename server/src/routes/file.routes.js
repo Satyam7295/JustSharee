@@ -38,6 +38,7 @@ router.get("/getFileDetails/:fileId",getFileDetails);
 router.post('/generateShareShortenLink', generateShareShortenLink);
 router.post('/sendLinkEmail', sendLinkEmail);
 
+router.post('/updateFileExpiry/:fileId', updateFileExpiry);
 router.post('/FileExpiry', updateFileExpiry);
 router.post('/updateAllFileExpiry', updateAllFileExpiry);
 router.post('/updateFilePassword', updateFilePassword);

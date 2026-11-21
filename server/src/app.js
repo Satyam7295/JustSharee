@@ -14,8 +14,8 @@ dotenv.config({ path: path.resolve(moduleDir, "../.env") });
 const app=express();
 
 const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.FRONTEND_URL,
+  process.env.CLIENT_URL?.replace(/\/+$/, ''),
+  process.env.FRONTEND_URL?.replace(/\/+$/, ''),
   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
 ].filter(Boolean);
 

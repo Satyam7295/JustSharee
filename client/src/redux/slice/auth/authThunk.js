@@ -50,7 +50,7 @@ export const getUser = createAsyncThunk('auth/getUser', async (userId, { rejectW
   try {
     console.log(userId);
     
-    const res = await axiosInstance.get(`users/user/${userId}`);
+    const res = await axiosInstance.get(`/users/user/${userId}`);
     console.log(res);
     
     return res.data;

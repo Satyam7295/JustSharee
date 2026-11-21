@@ -27,7 +27,7 @@ export const uploadFile = createAsyncThunk("file/upload",async (formData, { reje
 // GET FILE DETAILS
 export const getFileDetails = createAsyncThunk("file/getDetails", async (fileId, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.get(`/getFileDetails/${fileId}`);
+    const res = await axiosInstance.get(`/files/getFileDetails/${fileId}`);
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -37,7 +37,7 @@ export const getFileDetails = createAsyncThunk("file/getDetails", async (fileId,
 // DELETE FILE
 export const deleteFile = createAsyncThunk("file/delete", async (fileId, { rejectWithValue }) => {
   try {
-    await axiosInstance.delete(`/delete/${fileId}`);
+    await axiosInstance.delete(`/files/delete/${fileId}`);
     return fileId;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -47,7 +47,7 @@ export const deleteFile = createAsyncThunk("file/delete", async (fileId, { rejec
 // UPDATE FILE STATUS (active/expired)
 export const updateFileStatus = createAsyncThunk("file/updateStatus", async ({ fileId, status }, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.put(`/update/${fileId}`, { status });
+    const res = await axiosInstance.put(`/files/update/${fileId}`, { status });
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -57,7 +57,7 @@ export const updateFileStatus = createAsyncThunk("file/updateStatus", async ({ f
 // GENERATE SHORT LINK
 export const generateShareShortenLink = createAsyncThunk("file/generateShortLink", async ({ fileId }, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.post("/generateShareShortenLink", { fileId });
+    const res = await axiosInstance.post("/files/generateShareShortenLink", { fileId });
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -67,7 +67,7 @@ export const generateShareShortenLink = createAsyncThunk("file/generateShortLink
 // SEND LINK VIA EMAIL
 export const sendLinkEmail = createAsyncThunk("file/sendLinkEmail", async ({ fileId, email }, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.post("/sendLinkEmail", { fileId, email });
+    const res = await axiosInstance.post("/files/sendLinkEmail", { fileId, email });
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -77,7 +77,7 @@ export const sendLinkEmail = createAsyncThunk("file/sendLinkEmail", async ({ fil
 // UPDATE EXPIRY
 export const updateFileExpiry = createAsyncThunk("file/updateExpiry", async ({ fileId, expiresAt }, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.post("/updateFileExpiry", { fileId, expiresAt });
+    const res = await axiosInstance.post(`/files/updateFileExpiry/${fileId}`, { expiresAt });
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -87,7 +87,7 @@ export const updateFileExpiry = createAsyncThunk("file/updateExpiry", async ({ f
 // UPDATE PASSWORD
 export const updateFilePassword = createAsyncThunk("file/updatePassword", async ({ fileId, password }, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.post("/updateFilePassword", { fileId, password });
+    const res = await axiosInstance.post("/files/updateFilePassword", { fileId, password });
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -97,7 +97,7 @@ export const updateFilePassword = createAsyncThunk("file/updatePassword", async 
 // SEARCH FILES
 export const searchFiles = createAsyncThunk("file/search", async (query, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.get(`/searchFiles?query=${query}`);
+    const res = await axiosInstance.get(`/files/searchFiles?query=${encodeURIComponent(query)}`);
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -107,7 +107,7 @@ export const searchFiles = createAsyncThunk("file/search", async (query, { rejec
 // SHOW USER FILES
 export const showUserFiles = createAsyncThunk("file/showUserFiles", async (_, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.get("/showUserFiles");
+    const res = await axiosInstance.get("/files/showUserFiles");
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -117,7 +117,7 @@ export const showUserFiles = createAsyncThunk("file/showUserFiles", async (_, { 
 // GENERATE QR
 export const generateQR = createAsyncThunk("file/generateQR", async (fileId, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.get(`/generateQR/${fileId}`, { responseType: 'blob' });
+    const res = await axiosInstance.get(`/files/generateQR/${fileId}`, { responseType: 'blob' });
     return URL.createObjectURL(res.data); // returns blob URL
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -127,7 +127,7 @@ export const generateQR = createAsyncThunk("file/generateQR", async (fileId, { r
 // GET DOWNLOAD COUNT
 export const getDownloadCount = createAsyncThunk("file/downloadCount", async (fileId, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.get(`/getDownloadCount/${fileId}`);
+    const res = await axiosInstance.get(`/files/getDownloadCount/${fileId}`);
     return { fileId, count: res.data.count };
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -137,7 +137,7 @@ export const getDownloadCount = createAsyncThunk("file/downloadCount", async (fi
 // RESOLVE SHORT LINK
 export const resolveShareLink = createAsyncThunk("file/resolveLink", async (shortUrl, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.get(`/resolveShareLink/${shortUrl}`);
+    const res = await axiosInstance.get(`/files/resolveShareLink/${shortUrl}`);
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
@@ -145,9 +145,9 @@ export const resolveShareLink = createAsyncThunk("file/resolveLink", async (shor
 });
 
 // VERIFY PASSWORD
-export const verifyFilePassword = createAsyncThunk("file/verifyPassword", async ({ fileId, password }, { rejectWithValue }) => {
+export const verifyFilePassword = createAsyncThunk("file/verifyPassword", async ({ shortCode, password }, { rejectWithValue }) => {
   try {
-    const res = await axiosInstance.post("/verifyFilePassword", { fileId, password });
+    const res = await axiosInstance.post("/files/verifyFilePassword", { shortCode, password });
     return res.data;
   } catch (err) {
     return rejectWithValue(err.response?.data);
